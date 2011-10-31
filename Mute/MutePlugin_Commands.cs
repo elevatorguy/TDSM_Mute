@@ -19,7 +19,7 @@ namespace Mute
             if (mutelist.uservoted(sender.Name) && !sender.Op)
             {
                 DateTime timevoted = mutelist.getTimeVoted(sender.Name);
-                TimeSpan timeleft = timevoted.AddMinutes(5) - DateTime.UtcNow;
+                TimeSpan timeleft = timevoted.AddMinutes(Mute.timebetweenvotes) - DateTime.UtcNow;
 
                 sender.sendMessage("You have " + timeleft.Minutes + ":" + timeleft.Seconds + " before you can vote again.");
                 return;
@@ -31,7 +31,7 @@ namespace Mute
             string playername = args[0];
 
             Player target = Server.GetPlayerByName(playername.ToLower());
-            int time = 5;
+            int time = Mute.timemuted;
 
             if (target == null)
                 throw new CommandError("Could not find specified player.");

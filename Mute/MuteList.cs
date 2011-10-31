@@ -78,7 +78,7 @@ namespace Mute
                 DateTime timemuted;
                 muted.TryGetValue(name, out timemuted);
 
-                if (timemuted < DateTime.UtcNow.AddMinutes(-5))
+                if (timemuted < DateTime.UtcNow.AddMinutes(-(Mute.timemuted)))
                 {
                     muted.Remove(name);
                 }
@@ -128,7 +128,7 @@ namespace Mute
                 DateTime timevoted;
                 voters.TryGetValue(name, out timevoted);
 
-                if (timevoted < DateTime.UtcNow.AddMinutes(-5))
+                if (timevoted < DateTime.UtcNow.AddMinutes(-(Mute.timebetweenvotes)))
                 {
                     voters.Remove(name);
                 }
