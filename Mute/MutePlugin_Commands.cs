@@ -54,6 +54,7 @@ namespace Mute
                 {
                     sender.sendMessage(playername + " has been muted for " + time + " minutes.");
                     target.sendMessage("You have been muted for " + time + " minutes.");
+                    Server.notifyAll(playername + " has been muted for " + time + " minutes.");
                 }
                 else
                 {
@@ -71,6 +72,7 @@ namespace Mute
                 {
                     sender.sendMessage(playername + " has been muted for " + time + " minutes.");
                     target.sendMessage("You have been muted from chat for " + time + " minutes.");
+                    Server.notifyAll(playername + " has been muted for " + time + " minutes.");
                 }
             }
         }
