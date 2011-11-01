@@ -9,9 +9,9 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mute</RootNamespace>
-    <AssemblyName>Mute_0_35_0</AssemblyName>
+    <AssemblyName>Mute_0_35_1</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <ReleaseVersion>0.35.0</ReleaseVersion>
+    <ReleaseVersion>0.35.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +48,7 @@
     <Compile Include="MuteList.cs" />
     <Compile Include="MutePlugin.cs" />
     <Compile Include="MutePlugin_Commands.cs" />
+    <Compile Include="NDesk.Options\Options.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

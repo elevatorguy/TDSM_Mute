@@ -18,3 +18,11 @@ Other Features
 +non-OPs can only vote once every five minutes.
 +Only ops can mute ops.
 +If you are muted, you cannot vote.
++you can configure the settings in the mute.properties file.
+
+Defaults
+--------
+
++default time muted is 5 minutes.
++default time between votes is 5 minutes
++default semi permanent mute is 168 hours (1 week)

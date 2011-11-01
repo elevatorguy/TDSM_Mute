@@ -12,16 +12,19 @@ namespace Mute
 
         private Dictionary<string, DateTime> voters; // <name, (time voted)>
 
-        public MuteList()
+        MutePlugin instance;
+
+        public MuteList(MutePlugin muteplugin)
         {
             votes = new Dictionary<string, int>();
             muted = new Dictionary<string, DateTime>();
             voters = new Dictionary<string, DateTime>();
+            instance = muteplugin;
         }
 
         //returns true if user is now muted
         //false if user was already muted
-        public bool mute(string name)
+        public bool mute(string name, bool permanent)
         {
             name = name.ToLower();
 
@@ -29,8 +32,14 @@ namespace Mute
             {
                 return false;
             }
-
-            muted.Add(name, DateTime.UtcNow);
+            if (permanent)
+            {
+                muted.Add(name, DateTime.UtcNow.AddHours(instance.permatime));
+            }
+            else
+            {
+                muted.Add(name, DateTime.UtcNow);
+            }
 
             return true;
         }
@@ -51,7 +60,7 @@ namespace Mute
 
                 if (votesforname == 4)
                 {
-                    mute(name);
+                    mute(name, false);
                     votes.Remove(name);
                 }
                 else
@@ -78,7 +87,7 @@ namespace Mute
                 DateTime timemuted;
                 muted.TryGetValue(name, out timemuted);
 
-                if (timemuted < DateTime.UtcNow.AddMinutes(-(Mute.timemuted)))
+                if (timemuted < DateTime.UtcNow.AddMinutes(-(instance.timemuted)))
                 {
                     muted.Remove(name);
                 }
@@ -128,7 +137,7 @@ namespace Mute
                 DateTime timevoted;
                 voters.TryGetValue(name, out timevoted);
 
-                if (timevoted < DateTime.UtcNow.AddMinutes(-(Mute.timebetweenvotes)))
+                if (timevoted < DateTime.UtcNow.AddMinutes(-(instance.timebetweenvotes)))
                 {
                     voters.Remove(name);
                 }
@@ -151,6 +160,21 @@ namespace Mute
             }
 
             voters.Add(name, DateTime.UtcNow);
+        }
+
+        // returns true if the user was unmuted just now
+        // returns false if the user was never muted
+        public bool unmute(string name)
+        {
+            name = name.ToLower();
+
+            if (muted.ContainsKey(name))
+            {
+                muted.Remove(name);
+                return true;
+            }
+
+            return false;
         }
 
     }
