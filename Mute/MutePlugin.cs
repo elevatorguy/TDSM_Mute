@@ -28,6 +28,11 @@ namespace Mute
             get { return properties.getValue("semi-permanent", 168); }
         }
 
+        public int minvotes
+        {
+            get { return properties.getValue("min-votes", 5); }
+        }
+
         public override void Load()
         {
             Name = "Mute";
@@ -106,6 +111,7 @@ namespace Mute
             var dummy = timemuted;
             var dummy2 = timebetweenvotes;
             var dummy3 = permatime;
+            var dummy4 = minvotes;
             properties.Save(true);
         }
     }

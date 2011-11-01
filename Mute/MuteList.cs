@@ -58,7 +58,7 @@ namespace Mute
                 int votesforname;
                 votes.TryGetValue(name, out votesforname);
 
-                if (votesforname == 4)
+                if (votesforname == (instance.minvotes-1))
                 {
                     mute(name, false);
                     votes.Remove(name);
