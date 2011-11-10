@@ -2,14 +2,14 @@
 using Terraria_Server.Commands;
 using System;
 using Terraria_Server;
-using Terraria_Server.Plugin;
+using Terraria_Server.Plugins;
 using NDesk.Options;
 
 namespace Mute
 {
-    public partial class MutePlugin : Plugin
+    public partial class MutePlugin : BasePlugin
     {
-        void MuteCommand(Server server, ISender sender, ArgumentList argz)
+        void MuteCommand(ISender sender, ArgumentList argz)
         {
             var permamute = false;
 
@@ -91,7 +91,7 @@ namespace Mute
             }
         }
 
-        void UnMuteCommand(Server server, ISender sender, ArgumentList args)
+        void UnMuteCommand(ISender sender, ArgumentList args)
         {
             if (args.Count != 1)
                 throw new CommandError("");

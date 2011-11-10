@@ -1,14 +1,14 @@
 
 using Terraria_Server;
-using Terraria_Server.Plugin;
-using Terraria_Server.Events;
+using Terraria_Server.Plugins;
 using Terraria_Server.Commands;
 using System;
 using Terraria_Server.Misc;
 using System.IO;
+using Terraria_Server.Logging;
 namespace Mute
 {
-    public partial class MutePlugin : Plugin
+    public partial class MutePlugin : BasePlugin
     {
         PropertiesFile properties;
         private MuteList mutelist;
@@ -33,14 +33,17 @@ namespace Mute
             get { return properties.getValue("min-votes", 5); }
         }
 
-        public override void Load()
+        public MutePlugin()
         {
             Name = "Mute";
             Description = "mute command";
             Author = "elevatorguy";
-            Version = "0.35.0";
-            TDSMBuild = 35;
+            Version = "0.36.0";
+            TDSMBuild = 36;
+        }
 
+        protected override void Initialized(object state)
+        {
             string pluginFolder = Statics.PluginPath + Path.DirectorySeparatorChar + "Mute";
             CreateDirectory(pluginFolder);
 
@@ -60,21 +63,26 @@ namespace Mute
                 .Calls(this.UnMuteCommand);
         }
 
-        public override void Enable()
+        protected override void Disposed(object state)
+        {
+
+        }
+
+        protected override void Enabled()
         {
             mutelist = new MuteList(this);
-            Program.tConsole.WriteLine(base.Name + " enabled");
-            this.registerHook(Hooks.PLAYER_CHAT);
+            ProgramLog.Plugin.Log(base.Name + " enabled");
         }
 
-        public override void Disable()
+        protected override void Disabled()
         {
-            Program.tConsole.WriteLine(base.Name + " disabled.");
+            ProgramLog.Plugin.Log(base.Name + " disabled.");
         }
 
-        public override void onPlayerChat(MessageEvent ev)
+        [Hook(HookOrder.TERMINAL)]
+        void onPlayerChat(ref HookContext ctx, ref HookArgs.PlayerChat args)
         {
-            Player player = ev.Sender as Player;
+            Player player = ctx.Sender as Player;
             string playername = player.Name;
 
             if (mutelist.checklist(playername))
@@ -91,7 +99,7 @@ namespace Mute
                     player.sendMessage("You have " + timeleft.Minutes + ":" + timeleft.Seconds + " before you can chat again.");
                 }
 
-                ev.Cancelled = true;
+                ctx.SetResult(HookResult.IGNORE);
             }
 
             return;
