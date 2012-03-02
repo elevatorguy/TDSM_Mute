@@ -38,8 +38,8 @@ namespace Mute
             Name = "Mute";
             Description = "mute command";
             Author = "elevatorguy";
-            Version = "0.36.0";
-            TDSMBuild = 36;
+            Version = "0.37.0";
+            TDSMBuild = 37;
         }
 
         protected override void Initialized(object state)
