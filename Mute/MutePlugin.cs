@@ -1,17 +1,22 @@
 
-using Terraria_Server;
-using Terraria_Server.Plugins;
-using Terraria_Server.Commands;
 using System;
-using Terraria_Server.Misc;
 using System.IO;
-using Terraria_Server.Logging;
+using Terraria;
+using TShockAPI;
+using TerrariaApi.Server;
+using TShockAPI.Hooks;
+using TShockAPI.Net;
+using System.Collections.Generic;
+
 namespace Mute
 {
-    public partial class MutePlugin : BasePlugin
+    [ApiVersion(1, 14)]
+    public partial class MutePlugin : TerrariaPlugin
     {
         PropertiesFile properties;
         private MuteList mutelist;
+
+        public static List<MyPlayer> PlayerList;
 
         public int timemuted
         {
@@ -33,75 +38,122 @@ namespace Mute
             get { return properties.getValue("min-votes", 5); }
         }
 
-        public MutePlugin()
+        public MutePlugin(Main game) : base(game)
         {
-            Name = "Mute";
-            Description = "mute command";
-            Author = "elevatorguy";
-            Version = "0.37.0";
-            TDSMBuild = 37;
+            //constructor
         }
 
-        protected override void Initialized(object state)
+        public override string Name
         {
-            string pluginFolder = Statics.PluginPath + Path.DirectorySeparatorChar + "Mute";
+            get
+            {
+                return "Mute2";
+            }
+        }
+
+        public override string Author
+        {
+            get
+            {
+                return "elevatorguy";
+            }
+        }
+
+        public override string Description
+        {
+            get
+            {
+                return "Fancier muting.";
+            }
+        }
+
+        public override Version Version
+        {
+            get
+            {
+                return new Version(4, 2);
+            }
+        }
+
+        public override void Initialize()
+        {
+            ServerApi.Hooks.GameInitialize.Register(this, OnInitialize);
+            ServerApi.Hooks.NetGreetPlayer.Register(this, OnGreetPlayer);
+            ServerApi.Hooks.ServerLeave.Register(this, OnLeave);
+            ServerApi.Hooks.ServerChat.Register(this, OnChat);
+        }
+
+        public void OnInitialize(EventArgs e)
+        {
+            Commands.ChatCommands.Add(new Command("mute.player.xmute", MuteCommand, "xmute"));
+            Commands.ChatCommands.Add(new Command("mute.admin.xmute", AdminMuteCommand, "xmute"));
+            Commands.ChatCommands.Add(new Command("mute.admin.xunmute", UnMuteCommand, "xunmute"));
+
+            string pluginFolder = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "Mute";
             CreateDirectory(pluginFolder);
 
             properties = new PropertiesFile(pluginFolder + Path.DirectorySeparatorChar + "mute.properties");
             initPropFile();
 
-            AddCommand("mute")
-                .WithDescription("Mute a player from chat.")
-                .WithAccessLevel(AccessLevel.PLAYER)
-                .WithHelpText("The effect lasts five minutes.")
-                .WithHelpText("Regular Players can mute if "+timemuted+" people vote.")
-                .Calls(this.MuteCommand);
-
-            AddCommand("unmute")
-                .WithDescription("Lets a player chat again")
-                .WithHelpText("For unmuting permanent mutes")
-                .Calls(this.UnMuteCommand);
-        }
-
-        protected override void Disposed(object state)
-        {
-
-        }
-
-        protected override void Enabled()
-        {
             mutelist = new MuteList(this);
-            ProgramLog.Plugin.Log(base.Name + " enabled");
         }
 
-        protected override void Disabled()
+        protected override void Dispose(bool disposing)
         {
-            ProgramLog.Plugin.Log(base.Name + " disabled.");
+            if (disposing)
+            {
+                ServerApi.Hooks.GameInitialize.Deregister(this, OnInitialize);
+            }
+            
+            base.Dispose(disposing);
         }
 
-        [Hook(HookOrder.TERMINAL)]
-        void onPlayerChat(ref HookContext ctx, ref HookArgs.PlayerChat args)
+        void OnLeave(LeaveEventArgs e)
         {
-            Player player = ctx.Sender as Player;
+            lock (PlayerList)
+            {
+                for (int i = 0; i < PlayerList.Count; i++)
+                {
+                    if (PlayerList[i].Index == e.Who)
+                    {
+                        PlayerList.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        void OnGreetPlayer(GreetPlayerEventArgs e)
+        {
+            lock (PlayerList)
+                PlayerList.Add(new MyPlayer(e.Who));
+        }
+
+        void OnChat(ServerChatEventArgs e)
+        {
+            TSPlayer player = TShock.Players[e.Who];
             string playername = player.Name;
 
-            if (mutelist.checklist(playername))
+            string text = e.Text;
+            if (!text.StartsWith("/") || text.StartsWith("/me")) //if talking or using /me
             {
-                DateTime timemuted = mutelist.getTimeMuted(playername);
-                TimeSpan timeleft = timemuted.AddMinutes(5) - DateTime.UtcNow;
-
-                if (timemuted > DateTime.UtcNow.AddHours(1))
+                if (mutelist.checklist(playername))
                 {
-                    player.sendMessage("You are muted for a long time.");
-                }
-                else
-                {
-                    player.sendMessage("You have " + timeleft.Minutes + ":" + timeleft.Seconds + " before you can chat again.");
-                }
+                    DateTime timemuted = mutelist.getTimeMuted(playername);
+                    TimeSpan timeleft = timemuted.AddMinutes(5) - DateTime.UtcNow;
 
-                ctx.SetResult(HookResult.IGNORE);
+                    if (timemuted > DateTime.UtcNow.AddHours(1))
+                    {
+                        player.SendMessage("You are muted for a long time.", Color.Red);
+                    }
+                    else
+                    {
+                        player.SendMessage("You have " + timeleft.Minutes + ":" + timeleft.Seconds + " before you can chat again.", Color.Red);
+                    }
+
+                    e.Handled = true;
+                }
             }
-
             return;
         }
 

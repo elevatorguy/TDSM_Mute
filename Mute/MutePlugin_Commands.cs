@@ -1,15 +1,16 @@
 
-using Terraria_Server.Commands;
 using System;
-using Terraria_Server;
-using Terraria_Server.Plugins;
 using NDesk.Options;
+using Terraria;
+using TShockAPI;
+using TerrariaApi.Server;
+using System.Collections.Generic;
 
 namespace Mute
 {
-    public partial class MutePlugin : BasePlugin
+    public partial class MutePlugin : TerrariaPlugin
     {
-        void MuteCommand(ISender sender, ArgumentList argz)
+        void MuteCommand(CommandArgs argzz)
         {
             var permamute = false;
 
@@ -18,100 +19,177 @@ namespace Mute
 				{ "p|permanent", v => permamute = true },
 			};
 
-            var args = options.Parse(argz);
+            TSPlayer player = argzz.Player;
+            if (player == null)
+                return;
 
-            if (mutelist.checklist(sender.Name))
+            List<string> args = options.Parse(argzz.Parameters);
+
+            if (mutelist.checklist(player.Name))
             {
-                sender.sendMessage("You can't vote to mute others while you are muted.");
+                player.SendErrorMessage("You can't vote to mute others while you are muted.");
                 return;
             }
 
-            if (mutelist.uservoted(sender.Name) && !sender.Op)
+            if (mutelist.uservoted(player.Name))
             {
-                DateTime timevoted = mutelist.getTimeVoted(sender.Name);
+                DateTime timevoted = mutelist.getTimeVoted(player.Name);
                 TimeSpan timeleft = timevoted.AddMinutes(timebetweenvotes) - DateTime.UtcNow;
 
-                sender.sendMessage("You have " + timeleft.Minutes + ":" + timeleft.Seconds + " before you can vote again.");
+                player.SendInfoMessage("You have " + timeleft.Minutes + ":" + timeleft.Seconds + " before you can vote again.");
                 return;
             }
 
             if (args.Count != 1)
-                throw new CommandError("");
+            {
+                player.SendErrorMessage("Error");
+                return;
+            }
 
             string playername = args[0];
 
-            Player target = Server.GetPlayerByName(playername.ToLower());
+            List<MyPlayer> targets = MyPlayer.GetPlayersByName(playername.ToLower());
+
+            if (targets.Count == 0)
+            {
+                player.SendErrorMessage("Player not Found.", Color.Red);
+                return;
+            }
+
+            MyPlayer target = targets[0];
+
             int time = timemuted;
 
             if (target == null)
-                throw new CommandError("Could not find specified player.");
-
-            if (!sender.Op && target.Op)
             {
-                sender.sendMessage("Only OPs can mute OPs.");
+                player.SendErrorMessage("Could not find specified player.");
                 return;
             }
 
-            if (!sender.Op)
-            {
-                mutelist.uservote(sender.Name);
+            mutelist.uservote(player.Name);
 
-                if (!mutelist.vote(playername))
-                {
-                    sender.sendMessage("The player \"" + target.Name + "\" is already muted.");
-                }
-                else if (mutelist.checklist(playername))
-                {
-                    sender.sendMessage(target.Name + " has been muted for " + time + " minutes.");
-                    target.sendMessage("You have been muted for " + time + " minutes.");
-                    Server.notifyAll(target.Name + " has been muted for " + time + " minutes.");
-                }
-                else
-                {
-                    sender.sendMessage("Submitted your vote to mute " + target.Name);
-                    target.sendMessage("You recieved a vote to be muted from chat.");
-                }
+            if  (!mutelist.vote(playername))
+            {
+                player.SendErrorMessage("The player \"" + target.TSPlayer.Name + "\" is already muted.");
+            }
+            else if (mutelist.checklist(playername))
+            {
+                player.SendInfoMessage(target.TSPlayer.Name + " has been muted for " + time + " minutes.");
+                target.TSPlayer.SendInfoMessage("You have been muted for " + time + " minutes.");
+                MyPlayer.notifyAll(target.TSPlayer.Name + " has been muted for " + time + " minutes.");
             }
             else
             {
-                string period = time + " minutes.";
-                if (permamute)
-                    period = "a long time.";
-
-                if (!mutelist.mute(playername, permamute))
-                {
-                    sender.sendMessage("The player \"" + target.Name + "\" is already muted.");
-                }
-                else
-                {
-                    sender.sendMessage(target.Name + " has been muted for " + period);
-                    target.sendMessage("You have been muted from chat for " + period);
-                    Server.notifyAll(target.Name + " has been muted for " + period);
-                }
+                player.SendInfoMessage("Submitted your vote to mute " + target.TSPlayer.Name);
+                target.TSPlayer.SendInfoMessage("You recieved a vote to be muted from chat.");
             }
         }
 
-        void UnMuteCommand(ISender sender, ArgumentList args)
+        void AdminMuteCommand(CommandArgs argzz)
         {
+            var permamute = false;
+
+            var options = new OptionSet()
+			{
+				{ "p|permanent", v => permamute = true },
+			};
+
+            TSPlayer player = argzz.Player;
+            if (player == null)
+                return;
+
+            List<string> args = options.Parse(argzz.Parameters);
+
+            if (mutelist.checklist(player.Name))
+            {
+                player.SendErrorMessage("You can't vote to mute others while you are muted.");
+                return;
+            }
+
             if (args.Count != 1)
-                throw new CommandError("");
+            {
+                player.SendErrorMessage("Error");
+                return;
+            }
 
             string playername = args[0];
 
-            Player target = Server.GetPlayerByName(playername.ToLower());
+            List<MyPlayer> targets = MyPlayer.GetPlayersByName(playername.ToLower());
+
+            if (targets.Count == 0)
+            {
+                player.SendErrorMessage("Player not Found.", Color.Red);
+                return;
+            }
+
+            MyPlayer target = targets[0];
+
+            int time = timemuted;
 
             if (target == null)
-                throw new CommandError("Could not find specified player.");
-
-            if (mutelist.unmute(playername))
             {
-                sender.sendMessage(playername + " has been unmuted.");
-                target.sendMessage("You have been unmuted from chat.");
-                Server.notifyAll(playername + " has been unmuted.");
+                player.SendErrorMessage("Could not find specified player.");
+                return;
+            }
+
+            
+            string period = time + " minutes.";
+            if (permamute)
+                period = "a long time.";
+
+            if (!mutelist.mute(playername, permamute))
+            {
+                player.SendErrorMessage("The player \"" + target.TSPlayer.Name + "\" is already muted.");
             }
             else
             {
-                sender.sendMessage(playername + " was already unmuted.");
+                player.SendInfoMessage(target.TSPlayer.Name + " has been muted for " + period);
+                target.TSPlayer.SendInfoMessage("You have been muted from chat for " + period);
+                MyPlayer.notifyAll(target.TSPlayer.Name + " has been muted for " + period);
+            }
+        }
+
+        void UnMuteCommand(CommandArgs argzz)
+        {
+            var options = new OptionSet()
+			{
+			};
+
+            List<string> args = options.Parse(argzz.Parameters);
+            TSPlayer player = argzz.Player;
+            if (args.Count != 1)
+            {
+                player.SendErrorMessage("Error", Color.Red);
+                return;
+            }
+
+            string playername = args[0];
+
+            List<MyPlayer> targets = MyPlayer.GetPlayersByName(playername.ToLower());
+
+            if (targets.Count == 0)
+            {
+                player.SendErrorMessage("Player not Found.", Color.Red);
+                return;
+            }
+
+            MyPlayer target = targets[0];
+
+            if (target == null)
+            {
+                player.SendErrorMessage("Could not find specified player.");
+                return;
+            }
+
+            if (mutelist.unmute(playername))
+            {
+                player.SendInfoMessage(playername + " has been unmuted.");
+                target.TSPlayer.SendInfoMessage("You have been unmuted from chat.");
+                MyPlayer.notifyAll(playername + " has been unmuted.");
+            }
+            else
+            {
+                player.SendMessage(playername + " was already unmuted.", Color.Red);
             }
         }
     }

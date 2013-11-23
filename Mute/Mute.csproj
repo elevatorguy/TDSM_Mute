@@ -37,9 +37,11 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Terraria_Server, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Desktop\tdsm-1.1.2\Terraria_Server.exe</HintPath>
+    <Reference Include="TerrariaServer">
+      <HintPath>..\..\..\..\Terraria\TShock.4.2.1.1108\TerrariaServer.exe</HintPath>
+    </Reference>
+    <Reference Include="TShockAPI">
+      <HintPath>..\..\..\..\Terraria\TShock.4.2.1.1108\ServerPlugins\TShockAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +49,8 @@
     <Compile Include="MutePlugin.cs" />
     <Compile Include="MutePlugin_Commands.cs" />
     <Compile Include="NDesk.Options\Options.cs" />
+    <Compile Include="MyPlayer.cs" />
+    <Compile Include="PropertiesFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
