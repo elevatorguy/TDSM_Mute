@@ -38,10 +38,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="TerrariaServer">
-      <HintPath>..\..\..\..\Terraria\TShock.4.2.1.1108\TerrariaServer.exe</HintPath>
+      <HintPath>..\..\TShock-5.2-for-Terraria-1.4.4.9-win-x64-Release\ServerPlugins\TerrariaServer.dll</HintPath>
+    </Reference>
+    <Reference Include="TerrariaServer">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Terraria\TerrariaServer.exe</HintPath>
     </Reference>
     <Reference Include="TShockAPI">
-      <HintPath>..\..\..\..\Terraria\TShock.4.2.1.1108\ServerPlugins\TShockAPI.dll</HintPath>
+      <HintPath>..\..\TShock-5.2-for-Terraria-1.4.4.9-win-x64-Release\ServerPlugins\TShockAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
