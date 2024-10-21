@@ -7,16 +7,18 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="TerrariaServer">
+<!--		<HintPath>../tshock_5.2/TShock.Server</HintPath> -->
+        <HintPath>../tshock_5.2/bin/TerrariaServer.dll</HintPath>
     </Reference>
     <Reference Include="TShockAPI">
+		<HintPath>../tshock_5.2/ServerPlugins/TShockAPI.dll</HintPath>
     </Reference>
+
+    <Reference Include="OTAPI">
+        <HintPath>../tshock_5.2/bin/OTAPI.dll</HintPath>
+    </Reference>
+
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
