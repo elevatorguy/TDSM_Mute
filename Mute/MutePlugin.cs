@@ -71,7 +71,7 @@ namespace Mute
         {
             get
             {
-                return new Version(4, 2);
+                return new Version(5, 2);
             }
         }
 

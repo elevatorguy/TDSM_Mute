@@ -1,4 +1,4 @@
-Mute for TDSM
+Mute for tshock
 =================
 Mute is a system for muting players.
 

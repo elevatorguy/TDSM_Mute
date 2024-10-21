@@ -1,34 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0FEC21CD-5ABA-4A5D-A4F3-EB65F07DF68C}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mute</RootNamespace>
-    <AssemblyName>Mute_0_37_0</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <ReleaseVersion>0.36.0</ReleaseVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <AssemblyName>Mute_0_38_0</AssemblyName>
+    <ReleaseVersion>0.38.0</ReleaseVersion>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -38,24 +14,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="TerrariaServer">
-      <HintPath>..\..\..\..\Terraria\TShock.4.2.1.1108\TerrariaServer.exe</HintPath>
     </Reference>
     <Reference Include="TShockAPI">
-      <HintPath>..\..\..\..\Terraria\TShock.4.2.1.1108\ServerPlugins\TShockAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="MuteList.cs" />
-    <Compile Include="MutePlugin.cs" />
-    <Compile Include="MutePlugin_Commands.cs" />
-    <Compile Include="NDesk.Options\Options.cs" />
-    <Compile Include="MyPlayer.cs" />
-    <Compile Include="PropertiesFile.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -63,5 +25,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup />
 </Project>
