@@ -4,16 +4,16 @@
     <RootNamespace>Mute</RootNamespace>
     <AssemblyName>Mute_0_38_0</AssemblyName>
     <ReleaseVersion>0.38.0</ReleaseVersion>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+
     <Reference Include="TerrariaServer">
 		<HintPath>../tshock_5.2/TShock.Server</HintPath>
     </Reference>
     <Reference Include="TerrariaServer">
         <HintPath>../tshock_5.2/bin/TerrariaServer.dll</HintPath>
     </Reference>
-
     <Reference Include="TShockAPI">
 		<HintPath>../tshock_5.2/ServerPlugins/TShockAPI.dll</HintPath>
     </Reference>

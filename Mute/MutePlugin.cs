@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Mute
 {
-    [ApiVersion(1, 14)]
+    [ApiVersion(2, 1)]
     public partial class MutePlugin : TerrariaPlugin
     {
         PropertiesFile properties;
