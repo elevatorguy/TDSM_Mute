@@ -12,6 +12,7 @@
     <AssemblyName>Mute_0_37_0</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ReleaseVersion>0.36.0</ReleaseVersion>
+    <TargetFrameworkVersion>v6</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="TShock" Version="5.2.4" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
