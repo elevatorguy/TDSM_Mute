@@ -4,22 +4,19 @@
     <RootNamespace>Mute</RootNamespace>
     <AssemblyName>Mute_0_38_0</AssemblyName>
     <ReleaseVersion>0.38.0</ReleaseVersion>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
 
     <Reference Include="TerrariaServer">
-		<HintPath>../tshock_5.2/TShock.Server</HintPath>
-    </Reference>
-    <Reference Include="TerrariaServer">
-        <HintPath>../tshock_5.2/bin/TerrariaServer.dll</HintPath>
+		<HintPath>../../tshock_4.3.24/TerrariaServer.exe</HintPath>
     </Reference>
     <Reference Include="TShockAPI">
-		<HintPath>../tshock_5.2/ServerPlugins/TShockAPI.dll</HintPath>
+		<HintPath>../../tshock_4.3.24/ServerPlugins/TShockAPI.dll</HintPath>
     </Reference>
 
     <Reference Include="OTAPI">
-        <HintPath>../tshock_5.2/bin/OTAPI.dll</HintPath>
+        <HintPath>../../tshock_4.3.24/OTAPI.dll</HintPath>
     </Reference>
 
   </ItemGroup>
