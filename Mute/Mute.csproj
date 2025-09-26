@@ -1,27 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <PlatformTarget>x64</PlatformTarget>
     <OutputType>Library</OutputType>
     <RootNamespace>Mute</RootNamespace>
     <AssemblyName>Mute_0_38_0</AssemblyName>
     <ReleaseVersion>0.38.0</ReleaseVersion>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-
-    <Reference Include="TerrariaServer">
-		<HintPath>../tshock_5.2/TShock.Server</HintPath>
-    </Reference>
-    <Reference Include="TerrariaServer">
-        <HintPath>../tshock_5.2/bin/TerrariaServer.dll</HintPath>
-    </Reference>
-    <Reference Include="TShockAPI">
-		<HintPath>../tshock_5.2/ServerPlugins/TShockAPI.dll</HintPath>
-    </Reference>
-
-    <Reference Include="OTAPI">
-        <HintPath>../tshock_5.2/bin/OTAPI.dll</HintPath>
-    </Reference>
-
+    <PackageReference Include="TShock" Version="5.2.4" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
