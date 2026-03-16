@@ -1,5 +1,7 @@
 
 using System;
+using Microsoft.Xna.Framework;
+using Terraria;
 using NDesk.Options;
 using Terraria;
 using TShockAPI;
