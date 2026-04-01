@@ -5,14 +5,13 @@
     <RootNamespace>Mute</RootNamespace>
     <AssemblyName>Mute_TShock</AssemblyName>
     <Description>mute command for terraria chat</Description>
-    <FileVersion>6.1.0.0316</FileVersion>
+    <FileVersion>6.1.0.0401</FileVersion>
     <Version>0.6.1.0</Version>
     <TargetFramework>net9.0</TargetFramework>
     <Copyright>Jason Garner 2011-2013</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="TShock" Version="6.1.0" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.20" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

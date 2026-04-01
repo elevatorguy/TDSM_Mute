@@ -1,4 +1,3 @@
 #!/bin/bash
 cd Mute
-dotnet build
-
+dotnet build -c Release

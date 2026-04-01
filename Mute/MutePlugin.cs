@@ -72,12 +72,13 @@ namespace Mute
         {
             get
             {
-                return new Version(5, 2);
+                return new Version(6, 1);
             }
         }
 
         public override void Initialize()
         {
+            PlayerList = new List<MyPlayer>();
             ServerApi.Hooks.GameInitialize.Register(this, OnInitialize);
             ServerApi.Hooks.NetGreetPlayer.Register(this, OnGreetPlayer);
             ServerApi.Hooks.ServerLeave.Register(this, OnLeave);

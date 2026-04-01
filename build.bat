@@ -1,3 +1,3 @@
 @echo off
 cd Mute
-dotnet build
+dotnet build -c Release
